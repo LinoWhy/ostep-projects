@@ -4,7 +4,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-#define BUF_LEN 2
+#define BUF_LEN 4096
 #define INT_LEN 4
 
 void zip(char *bufp) {
