@@ -80,6 +80,8 @@ int do_builtin(char *argv[], unsigned int count) {
  */
 int do_newcmd(char *argv[], unsigned int count) {
     int rc = -1;
+    int fd = STDOUT_FILENO;
+    unsigned int isRedirect = 0;
     char buf[MAXLINE];
     char *s = NULL;
     char *pathOrig = strdup(path);
@@ -108,12 +110,35 @@ int do_newcmd(char *argv[], unsigned int count) {
         return 1;
     }
 
+    /* check redirection */
+    for (int i = 1; i < count; i++) {
+        if (0 == strcmp(argv[i], ">")) {
+            if (i != count - 2) {
+                write(STDERR_FILENO, error_message, strlen(error_message));
+                return 1;
+            } else {
+                /* open the file after '>' */
+                fd = open(argv[i + 1], O_CREAT | O_TRUNC);
+                if (-1 == fd) {
+                    write(STDERR_FILENO, error_message, strlen(error_message));
+                    return 1;
+                }
+                isRedirect = 1;
+                break;
+            }
+        }
+    }
+
     /* fork child process for the jobs */
     pid_t pid = fork();
 
     /* child process */
     if (0 == pid) {
         LOG_D("commands: %s\n", buf);
+
+        if (1 == isRedirect) {
+            dup2(fd, STDOUT_FILENO);
+        }
         rc = execv(buf, argv);
         /* shall never reaches here */
         LOG_D("execv returns %d\n", rc);

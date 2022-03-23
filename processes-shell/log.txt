@@ -1,21 +1,76 @@
-{43671 | main: 150} binary: ./wish
-{43671 | main: 159} arg: tests/8.in
-{43671 | main: 169} --- NEW LOOP ---
-{43671 | main: 189} tmp: ls, input: >
+{45736 | main: 174} binary: ./wish
+{45736 | main: 183} arg: tests/22.in
+{45736 | main: 193} --- NEW LOOP ---
+{45736 | main: 213} tmp: path, input: /bin tests
 
-{43671 | main: 199} tmp: >, input: 
-{43671 | main: 199} tmp: , input: (null)
-{43671 | main: 209} argv[0]: ls
-{43671 | main: 209} argv[1]: >
-{43671 | main: 214} do_builtin() returns 0
-{43671 | do_newcmd: 95} buf: /bin/ls, p: 
-{43671 | do_newcmd: 106} access returns 0
-{43672 | do_newcmd: 117} commands: /bin/ls
-{43671 | main: 222} do_newcmd() returns 1
-{43671 | main: 169} --- NEW LOOP ---
-{43671 | main: 189} tmp: exit, input: 
-{43671 | main: 199} tmp: , input: (null)
-{43671 | main: 209} argv[0]: exit
-{43671 | do_builtin: 33} get command: exit
-{43671 | main: 214} do_builtin() returns -1
-{43671 | main: 230} --- END OF EXECUTION ---
+{45736 | main: 223} tmp: /bin, input: tests
+
+{45736 | main: 223} tmp: tests, input: 
+{45736 | main: 223} tmp: , input: (null)
+{45736 | main: 233} argv[0]: path
+{45736 | main: 233} argv[1]: /bin
+{45736 | main: 233} argv[2]: tests
+{45736 | do_builtin: 56} get command: path
+{45736 | do_builtin: 68} path: /bin;./tests;
+{45736 | main: 238} do_builtin() returns 1
+{45736 | main: 193} --- NEW LOOP ---
+{45736 | main: 213} tmp: p5.sh, input: > /tmp/output22 & p4.sh > /tmp/output22
+
+{45736 | main: 223} tmp: >, input: /tmp/output22 & p4.sh > /tmp/output22
+
+{45736 | main: 223} tmp: /tmp/output22, input: & p4.sh > /tmp/output22
+
+{45736 | main: 223} tmp: &, input: p4.sh > /tmp/output22
+
+{45736 | main: 223} tmp: p4.sh, input: > /tmp/output22
+
+{45736 | main: 223} tmp: >, input: /tmp/output22
+
+{45736 | main: 223} tmp: /tmp/output22, input: 
+{45736 | main: 223} tmp: , input: (null)
+{45736 | main: 233} argv[0]: p5.sh
+{45736 | main: 233} argv[1]: >
+{45736 | main: 233} argv[2]: /tmp/output22
+{45736 | main: 233} argv[3]: &
+{45736 | main: 233} argv[4]: p4.sh
+{45736 | main: 233} argv[5]: >
+{45736 | main: 233} argv[6]: /tmp/output22
+{45736 | main: 238} do_builtin() returns 0
+{45736 | do_newcmd: 96} buf: /bin/p5.sh, p: ./tests;
+{45736 | do_newcmd: 96} buf: ./tests/p5.sh, p: 
+{45736 | do_newcmd: 107} access returns 0
+{45736 | main: 246} do_newcmd() returns 1
+{45736 | main: 193} --- NEW LOOP ---
+{45736 | main: 213} tmp: cat, input: /tmp/output22
+
+{45736 | main: 223} tmp: /tmp/output22, input: 
+{45736 | main: 223} tmp: , input: (null)
+{45736 | main: 233} argv[0]: cat
+{45736 | main: 233} argv[1]: /tmp/output22
+{45736 | main: 238} do_builtin() returns 0
+{45736 | do_newcmd: 96} buf: /bin/cat, p: ./tests;
+{45736 | do_newcmd: 107} access returns 0
+{45737 | do_newcmd: 137} commands: /bin/cat
+{45736 | main: 246} do_newcmd() returns 1
+{45736 | main: 193} --- NEW LOOP ---
+{45736 | main: 213} tmp: rm, input: -f /tmp/output22
+
+{45736 | main: 223} tmp: -f, input: /tmp/output22
+
+{45736 | main: 223} tmp: /tmp/output22, input: 
+{45736 | main: 223} tmp: , input: (null)
+{45736 | main: 233} argv[0]: rm
+{45736 | main: 233} argv[1]: -f
+{45736 | main: 233} argv[2]: /tmp/output22
+{45736 | main: 238} do_builtin() returns 0
+{45736 | do_newcmd: 96} buf: /bin/rm, p: ./tests;
+{45736 | do_newcmd: 107} access returns 0
+{45738 | do_newcmd: 137} commands: /bin/rm
+{45736 | main: 246} do_newcmd() returns 1
+{45736 | main: 193} --- NEW LOOP ---
+{45736 | main: 213} tmp: exit, input: 
+{45736 | main: 223} tmp: , input: (null)
+{45736 | main: 233} argv[0]: exit
+{45736 | do_builtin: 33} get command: exit
+{45736 | main: 238} do_builtin() returns -1
+{45736 | main: 254} --- END OF EXECUTION ---
