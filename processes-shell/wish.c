@@ -19,6 +19,8 @@
 char error_message[30] = "An error has occurred\n";
 FILE *flog = NULL;
 char path[MAXLINE] = "/bin;";
+char *args[MAXARG];
+unsigned int argCount = 0;
 
 /* try built-in commands
  * return 0: not built-in commands
@@ -153,16 +155,42 @@ int do_newcmd(char *argv[], unsigned int count) {
     return 1;
 }
 
+void do_parse(char *lineptr) {
+    char *tmp = NULL;
+
+    argCount = 0;
+    /* delimate with white space, tab and line feed */
+    tmp = strsep(&lineptr, " \t\n");
+    LOG_D("tmp: %s, input: %s\n", tmp, lineptr);
+
+    while (NULL != lineptr) {
+        /* ignore preceding white spaces or tabs */
+        if (0 != *tmp) {
+            args[argCount] = tmp;
+            argCount++;
+        }
+
+        tmp = strsep(&lineptr, " \t\n");
+        LOG_D("tmp: %s, input: %s\n", tmp, lineptr);
+    }
+    /* empty line */
+    if (0 == argCount) {
+        return;
+    }
+    /* arg list ends with NULL pointer */
+    args[argCount] = NULL;
+
+    for (int i = 0; i < argCount; i++) {
+        LOG_D("argv[%d]: %s\n", i, args[i]);
+    }
+}
+
 int main(int argc, char const *argv[]) {
     int rc = 0;
     unsigned int isbatch = 0;
     FILE *fin = stdin;
     char *lineptr = NULL;
-    char *lineOrg = NULL;
     size_t n = 0;
-    char *tmp;
-    char *args[MAXARG];
-    unsigned int argCount = 0;
 
     /* log file instead of standard stream */
     flog = fopen("./log.txt", "w");
@@ -206,32 +234,7 @@ int main(int argc, char const *argv[]) {
         }
 
         /* extract command line into arguments */
-        argCount = 0;
-        lineOrg = lineptr;
-        /* delimate with white spac, tab and line feed */
-        tmp = strsep(&lineptr, " \t\n");
-        LOG_D("tmp: %s, input: %s\n", tmp, lineptr);
-
-        while (NULL != lineptr) {
-            /* ignore preceding white spaces or tabs */
-            if (0 != *tmp) {
-                args[argCount] = tmp;
-                argCount++;
-            }
-
-            tmp = strsep(&lineptr, " \t\n");
-            LOG_D("tmp: %s, input: %s\n", tmp, lineptr);
-        }
-        /* empty line */
-        if (0 == argCount) {
-            continue;
-        }
-        /* arg list ends with NULL pointer */
-        args[argCount] = NULL;
-
-        for (int i = 0; i < argCount; i++) {
-            LOG_D("argv[%d]: %s\n", i, args[i]);
-        }
+        do_parse(lineptr);
 
         /* try built-in commands */
         rc = do_builtin(args, argCount);
@@ -252,6 +255,6 @@ int main(int argc, char const *argv[]) {
     }
 
     LOG_D("--- END OF EXECUTION ---\n");
-    free(lineOrg);
+    free(lineptr);
     return 0;
 }
