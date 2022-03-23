@@ -1,48 +1,21 @@
-{38306 | main: 121} binary: ./wish
-{38306 | main: 130} arg: tests/7.in
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: path, input: tests
+{43671 | main: 150} binary: ./wish
+{43671 | main: 159} arg: tests/8.in
+{43671 | main: 169} --- NEW LOOP ---
+{43671 | main: 189} tmp: ls, input: >
 
-{38306 | main: 180} tmp: tests, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: path
-{38306 | main: 186} argv[1]: tests
-{38306 | do_builtin: 56} get command: path
-{38306 | main: 191} do_builtin() returns 1
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: p1.sh, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: p1.sh
-{38306 | main: 191} do_builtin() returns 0
-{38306 | do_newcmd: 76} commands: /bin/p1.sh
-{38306 | do_newcmd: 78} access returns -1
-{38306 | main: 199} do_newcmd() returns 1
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: path, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: path
-{38306 | do_builtin: 56} get command: path
-{38306 | main: 191} do_builtin() returns 1
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: p1.sh, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: p1.sh
-{38306 | main: 191} do_builtin() returns 0
-{38306 | do_newcmd: 76} commands: /bin/p1.sh
-{38306 | do_newcmd: 78} access returns -1
-{38306 | main: 199} do_newcmd() returns 1
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: ls, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: ls
-{38306 | main: 191} do_builtin() returns 0
-{38306 | do_newcmd: 76} commands: /bin/ls
-{38306 | do_newcmd: 78} access returns 0
-{38306 | main: 199} do_newcmd() returns 1
-{38306 | main: 140} --- NEW LOOP ---
-{38306 | main: 160} tmp: exit, input: 
-{38306 | main: 180} tmp: , input: (null)
-{38306 | main: 186} argv[0]: exit
-{38306 | do_builtin: 33} get command: exit
-{38306 | main: 191} do_builtin() returns -1
-{38306 | main: 207} --- END OF EXECUTION ---
+{43671 | main: 199} tmp: >, input: 
+{43671 | main: 199} tmp: , input: (null)
+{43671 | main: 209} argv[0]: ls
+{43671 | main: 209} argv[1]: >
+{43671 | main: 214} do_builtin() returns 0
+{43671 | do_newcmd: 95} buf: /bin/ls, p: 
+{43671 | do_newcmd: 106} access returns 0
+{43672 | do_newcmd: 117} commands: /bin/ls
+{43671 | main: 222} do_newcmd() returns 1
+{43671 | main: 169} --- NEW LOOP ---
+{43671 | main: 189} tmp: exit, input: 
+{43671 | main: 199} tmp: , input: (null)
+{43671 | main: 209} argv[0]: exit
+{43671 | do_builtin: 33} get command: exit
+{43671 | main: 214} do_builtin() returns -1
+{43671 | main: 230} --- END OF EXECUTION ---

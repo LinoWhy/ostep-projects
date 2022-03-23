@@ -18,7 +18,7 @@
 
 char error_message[30] = "An error has occurred\n";
 FILE *flog = NULL;
-char path_origin[8] = "/bin";
+char path[MAXLINE] = "/bin;";
 
 /* try built-in commands
  * return 0: not built-in commands
@@ -55,6 +55,17 @@ int do_builtin(char *argv[], unsigned int count) {
     } else if (0 == strcmp(argv[0], "path")) {
         LOG_D("get command: path\n");
 
+        /* overwrite path */
+        path[0] = '\0';
+        for (int i = 1; i < count; i++) {
+            if ('/' != *argv[i]) {
+                strcat(path, "./");
+            }
+            strcat(path, argv[i]);
+            strcat(path, ";");
+        }
+
+        LOG_D("path: %s\n", path);
         rc = 1;
     } else {
         /* not built-in command */
@@ -68,13 +79,29 @@ int do_builtin(char *argv[], unsigned int count) {
  * return -1: shall break
  */
 int do_newcmd(char *argv[], unsigned int count) {
-    int rc = 0;
+    int rc = -1;
     char buf[MAXLINE];
+    char *s = NULL;
+    char *pathOrig = strdup(path);
+    char *p = pathOrig;
 
-    /* check access */
-    sprintf(buf, "%s/%s", path_origin, argv[0]);
-    LOG_D("commands: %s\n", buf);
-    rc = access(buf, F_OK | X_OK);
+    /* clear buffer */
+    buf[0] = '\0';
+    /* check access under each path */
+    s = strsep(&p, ";");
+    while (NULL != p) {
+        sprintf(buf, "%s/%s", s, argv[0]);
+        LOG_D("buf: %s, p: %s\n", buf, p);
+
+        rc = access(buf, F_OK | X_OK);
+        if (0 == rc) {
+            /* access returns ok */
+            break;
+        }
+        /* try next path */
+        s = strsep(&p, ";");
+    }
+    free(pathOrig);
     LOG_D("access returns %d\n", rc);
     if (rc < 0) {
         write(STDERR_FILENO, error_message, strlen(error_message));
@@ -86,10 +113,11 @@ int do_newcmd(char *argv[], unsigned int count) {
 
     /* child process */
     if (0 == pid) {
+        LOG_D("commands: %s\n", buf);
         rc = execv(buf, argv);
         /* shall never reaches here */
         LOG_D("execv returns %d\n", rc);
-        /* child process shall end if execute failed */
+        write(STDERR_FILENO, error_message, strlen(error_message));
         return -1;
     }
 
@@ -168,6 +196,10 @@ int main(int argc, char const *argv[]) {
 
             tmp = strsep(&lineptr, " \t\n");
             LOG_D("tmp: %s, input: %s\n", tmp, lineptr);
+        }
+        /* empty line */
+        if (0 == argCount) {
+            continue;
         }
         /* arg list ends with NULL pointer */
         args[argCount] = NULL;
